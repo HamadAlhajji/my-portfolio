@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.addEventListener('input', filterData);
         severityFilter.addEventListener('change', filterData);
 
-        // Render Charts
+        // Render Charts with Dynamic Control
         new Chart(document.getElementById('severityChart'), {
             type: 'doughnut',
             data: {
@@ -133,7 +133,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     borderWidth: 0
                 }]
             },
-            options: { plugins: { legend: { labels: { color: '#94a3b8' } } } }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8' } } }
+            }
         });
 
         new Chart(document.getElementById('attackTypeChart'), {
@@ -147,11 +151,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }]
             },
             options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     x: { ticks: { color: '#94a3b8' } },
-                    y: { ticks: { color: '#94a3b8' } }
+                    y: { ticks: { color: '#94a3b8', stepSize: 1 } }
                 },
-                plugins: { legend: { labels: { color: '#94a3b8' } } }
+                plugins: { legend: { display: false } }
             }
         });
     }
