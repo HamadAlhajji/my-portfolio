@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js Library for Log Dashboard -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <!-- Cyber Security Intro Loader -->
@@ -42,6 +44,7 @@
                     <li><a href="#skills">Skills</a></li>
                     <li><a href="#experience">Experience</a></li>
                     <li><a href="#projects">Projects & Tools</a></li>
+                    <li><a href="#dashboard">Log Dashboard</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
@@ -175,8 +178,80 @@
         </div>
     </section>
 
+    <!-- Interactive Log Analysis Dashboard (Mini SIEM) -->
+    <section id="dashboard" class="section">
+        <div class="container">
+            <h2 class="section-title"><i class="fa-solid fa-chart-pie"></i> Mini SIEM Log Analysis Dashboard</h2>
+            <p style="color: var(--text-muted); margin-bottom: 25px;">Live security event analysis, threat classification, and interactive event stream monitoring.</p>
+
+            <!-- Dynamic Metrics Cards -->
+            <div class="dash-stats-grid">
+                <div class="dash-stat-card">
+                    <span class="dash-stat-label">Total Events Streamed</span>
+                    <h3 id="stat-total" class="dash-stat-val text-blue">0</h3>
+                </div>
+                <div class="dash-stat-card">
+                    <span class="dash-stat-label">Critical / High Threats</span>
+                    <h3 id="stat-critical" class="dash-stat-val text-red">0</h3>
+                </div>
+                <div class="dash-stat-card">
+                    <span class="dash-stat-label">Blocked Malicious Actions</span>
+                    <h3 id="stat-blocked" class="dash-stat-val text-green">0</h3>
+                </div>
+            </div>
+
+            <!-- Charts Grid -->
+            <div class="dash-charts-grid">
+                <div class="dash-card">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 15px;"><i class="fa-solid fa-shield-virus"></i> Severity Breakdown</h3>
+                    <canvas id="severityChart"></canvas>
+                </div>
+                <div class="dash-card">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 15px;"><i class="fa-solid fa-bug"></i> Detected Attack Vectors</h3>
+                    <canvas id="attackTypeChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Interactive Log Table Stream with Quick Search & Filter -->
+            <div class="dash-card" style="overflow-x: auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 15px;">
+                    <h3 style="font-size: 1.1rem; font-family: 'Fira Code', monospace;"><i class="fa-solid fa-list-check"></i> Security Event Logs Stream</h3>
+                    
+                    <!-- Search & Filter Controls -->
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; width: 100%; max-width: 500px;">
+                        <input type="text" id="logSearchInput" placeholder="Search IP, Event, Port, Action..." style="flex: 2; padding: 8px 12px; background: var(--bg-dark); border: 1px solid var(--border); color: var(--text-main); border-radius: 6px; font-family: 'Fira Code', monospace; font-size: 0.85rem;">
+                        
+                        <select id="severityFilter" style="flex: 1; padding: 8px 12px; background: var(--bg-dark); border: 1px solid var(--border); color: var(--text-main); border-radius: 6px; font-family: 'Fira Code', monospace; font-size: 0.85rem;">
+                            <option value="ALL">All Severities</option>
+                            <option value="Critical">Critical</option>
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+                </div>
+
+                <table class="dash-log-table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Source IP</th>
+                            <th>Target Port</th>
+                            <th>Event Type</th>
+                            <th>Severity</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logTableBody">
+                        <!-- Loaded dynamically via script.js -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
-    <section id="contact" class="section">
+    <section id="contact" class="section bg-alt">
         <div class="container contact-content">
             <h2 class="section-title"><i class="fa-solid fa-paper-plane"></i> Get In Touch</h2>
             <p>I am open to cybersecurity roles, relocation, and collaborative opportunities.</p>
@@ -187,6 +262,19 @@
             </div>
         </div>
     </section>
+
+    <!-- Event Detail Modal -->
+    <div id="logModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; justify-content:center; align-items:center;">
+        <div style="background:var(--bg-card); border:1px solid var(--accent); width:90%; max-width:550px; border-radius:10px; padding:25px; box-shadow:0 0 20px rgba(16,185,129,0.3); font-family:'Fira Code', monospace;">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); padding-bottom:10px; margin-bottom:15px;">
+                <h3 style="color:var(--accent); font-size:1.1rem;"><i class="fa-solid fa-magnifying-glass-chart"></i> Incident Artifact Details</h3>
+                <span id="closeModal" style="cursor:pointer; color:var(--text-muted); font-size:1.4rem;">&times;</span>
+            </div>
+            <div id="modalContent" style="color:var(--text-main); font-size:0.9rem; line-height:1.8;">
+                <!-- Dynamic Details -->
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer>
