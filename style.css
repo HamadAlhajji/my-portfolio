@@ -443,7 +443,7 @@ footer {
 
 .dash-charts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 20px;
     margin-bottom: 25px;
 }
@@ -455,23 +455,31 @@ footer {
     border: 1px solid var(--border);
 }
 
+.dash-card canvas {
+    max-height: 280px !important;
+    width: 100% !important;
+}
+
 .dash-log-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     font-family: 'Fira Code', monospace;
     font-size: 0.85rem;
 }
 
 .dash-log-table th {
-    padding: 12px;
+    padding: 12px 18px !important;
     border-bottom: 1px solid var(--border);
     color: var(--accent);
     text-align: left;
+    white-space: nowrap;
 }
 
 .dash-log-table td {
-    padding: 10px 12px;
+    padding: 12px 18px !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    white-space: nowrap;
 }
 
 .ip-highlight {
